@@ -1,4 +1,4 @@
-<h1 style="text-align: center;">To do list</h1>
+<h1 style="text-align: center; margin-top: 30px">To do list 📝</h1>
 <div class="container">
     <div class="row justify-content-md-center mt-4">
         <div class="col col-lg-3">
@@ -7,17 +7,30 @@
                     aria-describedby="button-addon2" [(ngModel)]="task" />
                 <button class="btn btn-primary" type="button" id="button-addon2" (click)="saveTodo(task)">Add task</button>
             </div>
-            <table class="table table-striped">
+        </div>
+    </div>
+    <div *ngIf="todos.length > 0" class="row justify-content-lg-center mt-4">
+        <div class="col col-lg-6">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Task</th>
+                        <th scope="col">Finished</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr *ngFor="let todo of todos; let i = index" (click)="done(i)">
                         <th scope="row">{{i+1}}</th>
                         <td>{{todo.name}}</td>
                         <td *ngIf="todo.isFinished">✅</td>
                         <td *ngIf="!todo.isFinished">❌</td>
-                        <td (click)="delete(i)" class="btn btn-danger">🗑️</td>
+                        <td (click)="delete(i)"><p class="btn text-danger">Delete</p></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <div *ngIf="todos.length === 0" class="text-center mt-4"><p>No tasks. 🙁</p></div>
 </div>
