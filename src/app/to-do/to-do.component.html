@@ -3,13 +3,13 @@
     <div class="row justify-content-md-center mt-4">
         <div class="col col-lg-3">
             <div class="input-group mb-4">
-                <input type="text" class="form-control" placeholder="Enter task" aria-label="Enter task"
+                <input [ngClass]="{'is-invalid': error}" type="text" class="form-control" placeholder="Enter task" aria-label="Enter task"
                     aria-describedby="button-addon2" [(ngModel)]="task" />
                 <button class="btn btn-primary" type="button" id="button-addon2" (click)="saveTodo(task)">Add task</button>
             </div>
-            <!-- <div>
-                <p>Please provide a valid city.</p>
-            </div> -->
+            <div *ngIf="error">
+                <p class="text-danger">{{error}}</p>
+            </div>
         </div>
     </div>
     <div *ngIf="(todos$ | async)?.length!=0" class="row justify-content-lg-center mt-4">
