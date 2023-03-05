@@ -1,4 +1,5 @@
 export class Todo {
-  name!: string;
+  id!:number;
+  task!: string;
   isFinished!: boolean;
 }

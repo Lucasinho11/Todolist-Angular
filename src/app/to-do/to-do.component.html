@@ -7,9 +7,12 @@
                     aria-describedby="button-addon2" [(ngModel)]="task" />
                 <button class="btn btn-primary" type="button" id="button-addon2" (click)="saveTodo(task)">Add task</button>
             </div>
+            <!-- <div>
+                <p>Please provide a valid city.</p>
+            </div> -->
         </div>
     </div>
-    <div *ngIf="todos.length > 0" class="row justify-content-lg-center mt-4">
+    <div *ngIf="(todos$ | async)?.length!=0" class="row justify-content-lg-center mt-4">
         <div class="col col-lg-6">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -21,16 +24,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let todo of todos; let i = index" (click)="done(i)">
-                        <th scope="row">{{i+1}}</th>
-                        <td>{{todo.name}}</td>
+                    <tr *ngFor="let todo of todos$ | async; let i = index" (click)="done(todo.id)">
+                        <th scope="row">{{todo.id}}</th>
+                        <td>{{todo.task}}</td>
                         <td *ngIf="todo.isFinished">✅</td>
                         <td *ngIf="!todo.isFinished">❌</td>
-                        <td (click)="delete(i)"><p class="btn text-danger">Delete</p></td>
+                        <td (click)="delete(todo.id)"><p class="btn text-danger">Delete</p></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div *ngIf="todos.length === 0" class="text-center mt-4"><p>No tasks. 🙁</p></div>
+    <div *ngIf="(todos$ | async)?.length==0" class="text-center mt-4"><p>No tasks. 🙁</p></div>
 </div>

@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../models/to-do.model';
+import {HttpClient, HttpHeaders} from '@angular/common/http'
+import { Observable} from 'rxjs';
+import { switchMap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -7,32 +10,26 @@ import { Todo } from '../models/to-do.model';
 export class TodoService {
   todos: Todo[] = [];
 
-  getAllTodos(): Todo[] {
-    return this.todos;
+  constructor(private http: HttpClient) {}
+
+  getAllTodos(): Observable<Todo[]> {
+    return this.http.get<Todo[]>('http://127.0.0.1:8000/api/tasks');
+
   }
 
   addTodo(task:string){
-    if(!task){
-      alert('error');
-    }
-    if(task){
-      let todo = new Todo();
-      todo.name = task;
-      todo.isFinished = false;
-      this.todos.push(todo);
-      task = '';
-    }
-    return task;
+        return this.http.post<Todo>('http://127.0.0.1:8000/api/tasks', {"task": task }).subscribe();
   }
 
   done(id:number){
-    this.todos[id].isFinished = !this.todos[id].isFinished;
-    return this.todos;
+    let url = "http://127.0.0.1:8000/api/tasks/" + id;
+    return this.http.put<Todo>(url, {"isFinished": true }).subscribe();  
   }
 
   delete(id:number){
-    this.todos = this.todos.filter((v,i)=> i != id);
-    return this.todos;
+    let url = "http://127.0.0.1:8000/api/tasks/" + id;
+    let task = this.http.get<Todo[]>(url);
+    return this.http.delete<Todo>(url).subscribe();
   }
 
 }
